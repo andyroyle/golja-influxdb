@@ -2,7 +2,6 @@ class influxdb::params {
   $version                                      = 'installed'
   $ensure                                       = 'present'
   $service_enabled                              = true
-  $conf_template                                = 'influxdb/influxdb.conf.erb'
   $config_file                                  = '/etc/influxdb/influxdb.conf'
   $install_method                               = 'repo'
   $package_source                               = undef
@@ -109,6 +108,11 @@ class influxdb::params {
     default: {
       fail("Unsupported managed repository for osfamily: ${::osfamily}, operatingsystem: ${::operatingsystem}, module ${module_name} currently only supports managing repos for osfamily RedHat and Debian")
     }
+  }
+
+  $conf_template = (versioncmp( $version, '1.0.0') > 0) ? {
+    true    => 'influxdb/influxdb_latest_version.conf.erb',
+    default => 'influxdb/influxdb.conf.erb',
   }
 
 }
