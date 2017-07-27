@@ -110,9 +110,11 @@ class influxdb::params {
     }
   }
 
-  $conf_template = (versioncmp( $version, '1.0.0') > 0) ? {
-    true    => 'influxdb/influxdb_latest_version.conf.erb',
-    default => 'influxdb/influxdb.conf.erb',
+  if versioncmp($version, '1.0.0') > 0 {
+    $conf_template = 'influxdb/influxdb_latest_version.conf.erb'
+  }
+  else {
+    $conf_template = 'influxdb/influxdb.conf.erb'
   }
 
 }
