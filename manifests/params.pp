@@ -93,7 +93,7 @@ class influxdb::params {
     'Debian': {
       $influxdb_user    = 'influxdb'
       $influxdb_group   = 'influxdb'
-
+      $conf_template = 'influxdb/influxdb.conf.erb'
 
       if $::operatingsystem == 'Ubuntu' {
         $service_provider = 'upstart'
@@ -104,17 +104,11 @@ class influxdb::params {
     'RedHat', 'Amazon': {
       $influxdb_user    = 'influxdb'
       $influxdb_group   = 'influxdb'
+      $conf_template = 'influxdb/influxdb_latest_version.conf.erb'
     }
     default: {
       fail("Unsupported managed repository for osfamily: ${::osfamily}, operatingsystem: ${::operatingsystem}, module ${module_name} currently only supports managing repos for osfamily RedHat and Debian")
     }
-  }
-
-  if versioncmp($version, '1.0.0') > 0 {
-    $conf_template = 'influxdb/influxdb_latest_version.conf.erb'
-  }
-  else {
-    $conf_template = 'influxdb/influxdb.conf.erb'
   }
 
 }
